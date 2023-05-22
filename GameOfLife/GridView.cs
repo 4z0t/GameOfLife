@@ -18,7 +18,6 @@ namespace GameOfLife
 
             public virtual bool Action(GridView view, MouseMovedEventArgs args)
             {
-                Console.WriteLine("no");
                 return false;
             }
         }
@@ -37,13 +36,8 @@ namespace GameOfLife
                 (double x1, double y1) = view.ScaleVector(_x - args.X, _y - args.Y);
                 (double x2, double y2) = view.Position;
                 view.Position = (x1 + x2, y1 + y2);
-
-
-                //view.Position = view.TranslatePosition(_x - args.X, _y - args.Y);
                 _x = args.X;
                 _y = args.Y;
-                //view.Position = view.ScaleVector(args.X - _x, args.Y - _y);
-                Console.WriteLine(view.Position.ToString());
                 return true;
             }
 
@@ -60,10 +54,7 @@ namespace GameOfLife
 
             public override bool Action(GridView view, MouseMovedEventArgs args)
             {
-                Console.WriteLine(_cell);
                 (double x, double y) = view.TranslatePosition(args.X, args.Y);
-                Console.WriteLine(x.ToString());
-                Console.WriteLine(y.ToString());
                 view.SetCell(_cell, (int)Math.Floor(x), (int)Math.Floor(y));
                 return true;
             }

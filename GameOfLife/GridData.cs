@@ -10,14 +10,7 @@ namespace GameOfLife
     {
 
 
-        private readonly CellState[,] _cells = new CellState[5, 5]
-        {
-            { CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty, CellState.Alive},
-            { CellState.Empty, CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty},
-            { CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty, CellState.Empty},
-            { CellState.Empty, CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty},
-            { CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty},
-        };
+        private readonly CellState[,] _cells = new CellState[100, 100];
 
 
         public CellState this[int x, int y]
