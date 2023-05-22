@@ -34,7 +34,7 @@ namespace GameOfLife
 
             public override bool Action(GridView view, MouseMovedEventArgs args)
             {
-                (double x1, double y1) = view.ScaleVector(args.X - _x, args.Y - _y);
+                (double x1, double y1) = view.ScaleVector(_x - args.X, _y - args.Y);
                 (double x2, double y2) = view.Position;
                view.Position = (x1 + x2, y1 + y2);
 

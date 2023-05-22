@@ -7,13 +7,26 @@ using System.Threading.Tasks;
 namespace GameOfLife
 {
     internal class GridData : IData<CellState>
-
     {
+
+
+        private readonly CellState[,] _cells = new CellState[5, 5]
+        {
+            { CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty, CellState.Alive},
+            { CellState.Empty, CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty},
+            { CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty, CellState.Empty},
+            { CellState.Empty, CellState.Empty, CellState.Alive, CellState.Empty, CellState.Empty},
+            { CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty, CellState.Empty},
+        };
+
+
         public CellState this[int x, int y]
         {
             get
             {
-                return ((x + y) % 2 == 1) ? CellState.Alive : CellState.Empty;
+                if (x < 0 || x >= _cells.GetLength(0)) return CellState.Empty;
+                if (y < 0 || y >= _cells.GetLength(1)) return CellState.Empty;
+                return _cells[x, y];
             }
             set
             {
