@@ -10,14 +10,26 @@ namespace GameOfLife
     {
         private int[,] grid;
         private int gridSize;
+        private int AliveCounter;
 
         public Data() {
             gridSize = 30;
+            AliveCounter = 0;
             Reset(gridSize);
         }
 
         public int[,] getGrid(){
             return grid;
+        }
+
+        private void changeCounter(int newCount){
+            if (newCount == 1 && AliveCounter+1<=gridSize*gridSize){
+                AliveCounter += 1;
+            }
+            else if (newCount == -1 && AliveCounter - 1 >= 0)
+            {
+                AliveCounter -= 1;
+            }
         }
 
         public void OpenReset(int size){
@@ -33,6 +45,7 @@ namespace GameOfLife
         {
             int[,] grid = new int[size, size];
             gridSize = size;
+            AliveCounter = 0;
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
@@ -55,12 +68,14 @@ namespace GameOfLife
         public void SetCell(int x, int y, int value)
         {
             if (x >= 0 && y >= 0 && x < gridSize && y < gridSize)
-                grid[x, y] = value;
-            else
             {
-                // тут мб надо ошибку вернуть
-                return;
+                if (value == 1 && grid[x, y]==0)
+                {
+                    changeCounter(1);
+                }
+                grid[x, y] = value;
             }
+            // тут мб надо ошибку вернуть 
         }
 
         public void TransformSize(int newSize) //перенос данных в таблицу нового размера
@@ -90,8 +105,57 @@ namespace GameOfLife
             }
         }
 
-        public void Update(){ // здесь будут производиться вычисления для след. шагов
+        public int Update(){ // здесь будут производиться вычисления для след. шагов
             
+            // 0 - игра продолжается
+            // 1 - игра прекращается
+            // 2 - повторение конфигурации
+            // 3 - непредвиденная ошибка
+            
+            int count = 0;
+            int[,] oldGrid = grid;
+            // без краёв области
+            for (int i = 1; i < gridSize - 1; i++) {
+                for (int j = 1; j < gridSize - 1; j++) {
+                    count = oldGrid[i, j - 1] + oldGrid[i - 1, j] + oldGrid[i + 1, j] + oldGrid[i, j + 1];
+                    if (count == 3 && oldGrid[i, j] == 0)
+                    {
+                        grid[i, j] = 1;
+                        changeCounter(1);
+                    }
+                    else if ((count == 2 || count == 3) && oldGrid[i, j] == 1)
+                    {
+                    }
+                    else{
+                        grid[i, j] = 0;
+                        changeCounter(-1);
+                    }
+                }
+            }
+
+            //1 из крайних сторон
+            for (int j = 1; j < gridSize - 1; j++)
+            {
+                count = oldGrid[0, j - 1] + oldGrid[1, j] + oldGrid[0, j + 1];
+                if (count == 3 && oldGrid[0, j] == 0)
+                {
+                    grid[0, j] = 1;
+                    changeCounter(1);
+                }
+                else if ((count == 2 || count == 3) && oldGrid[0, j] == 1)
+                {
+                }
+                else
+                {
+                    grid[0, j] = 0;
+                    changeCounter(-1);
+                }
+            }
+
+            if (AliveCounter==0){
+                return 1;
+            }
+            return 0;
         }
     }
 }
