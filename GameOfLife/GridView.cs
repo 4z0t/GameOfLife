@@ -36,7 +36,7 @@ namespace GameOfLife
             {
                 (double x1, double y1) = view.ScaleVector(_x - args.X, _y - args.Y);
                 (double x2, double y2) = view.Position;
-               view.Position = (x1 + x2, y1 + y2);
+                view.Position = (x1 + x2, y1 + y2);
 
 
                 //view.Position = view.TranslatePosition(_x - args.X, _y - args.Y);
@@ -61,6 +61,10 @@ namespace GameOfLife
             public override bool Action(GridView view, MouseMovedEventArgs args)
             {
                 Console.WriteLine(_cell);
+                (double x, double y) = view.TranslatePosition(args.X, args.Y);
+                Console.WriteLine(x.ToString());
+                Console.WriteLine(y.ToString());
+                view.SetCell(_cell, (int)Math.Floor(x), (int)Math.Floor(y));
                 return true;
             }
 
@@ -90,15 +94,18 @@ namespace GameOfLife
             double top = _y - height / 2;
             double bottom = _y + height / 2;
 
+            double dx = left - Math.Truncate(left);
+            double dy = top - Math.Truncate(top);
+
             int gridWidth = (int)Math.Ceiling(width);
             int gridHeight = (int)Math.Ceiling(height);
 
-            for (int i = 0; i < gridWidth; i++)
+            for (int i = -1; i < gridWidth + 1; i++)
             {
-                double x = i * expScale;
-                for (int j = 0; j < gridHeight; j++)
+                double x = (i - dx) * expScale;
+                for (int j = -1; j < gridHeight + 1; j++)
                 {
-                    double y =  j * expScale ;
+                    double y = (j - dy) * expScale;
                     CellState cell = _data[(int)left + i, (int)top + j];
                     _view.DrawRect((int)x, (int)y, (int)expScale, (int)expScale, (cell == CellState.Alive) ? Color.White : Color.Blue);
                 }
@@ -106,9 +113,15 @@ namespace GameOfLife
         }
 
 
-        public void SetAction(GridViewEditState state)
+        public void SetCell(CellState cell, int x, int y)
+        {
+            _data[x, y] = cell;
+        }
+
+        public void SetAction(GridViewEditState state, MouseMovedEventArgs args)
         {
             _state = state;
+            this.OnAction(args);
         }
 
         public void OnAction(MouseMovedEventArgs args)
@@ -139,7 +152,7 @@ namespace GameOfLife
             int dx = centerX - x;
             int dy = centerY - y;
 
-            return (dx / expScale, dy / expScale);
+            return (_x - dx / expScale, _y - dy / expScale);
         }
 
         public double Scale

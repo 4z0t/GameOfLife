@@ -20,20 +20,25 @@ namespace GameOfLife
             {
                 if (e.Button == MouseButton.Middle)
                 {
-                    grid.SetAction(new GridView.GridViewChangePositionState(e.X, e.Y));
-                    return;
+                    grid.SetAction(new GridView.GridViewChangePositionState(e.X, e.Y), e);
+
                 }
-                grid.SetAction(new GridView.GridViewChangeCellState(e.Button switch
+                else
                 {
-                    MouseButton.Left => CellState.Alive,
-                    MouseButton.Right => CellState.Empty,
-                    _ => CellState.Empty,
-                }));
+
+                    grid.SetAction(new GridView.GridViewChangeCellState(e.Button switch
+                    {
+                        MouseButton.Left => CellState.Alive,
+                        MouseButton.Right => CellState.Empty,
+                        _ => CellState.Empty,
+                    }), e);
+                }
+                view.Display();
             };
 
             view.MouseRelease += (o, e) =>
             {
-                grid.SetAction(new GridView.GridViewEditState());
+                grid.SetAction(new GridView.GridViewEditState(), e);
             };
 
             view.MouseMove += (o, e) =>

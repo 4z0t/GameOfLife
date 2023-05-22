@@ -30,7 +30,9 @@ namespace GameOfLife
             }
             set
             {
-
+                if (x < 0 || x >= _cells.GetLength(0)) return;
+                if (y < 0 || y >= _cells.GetLength(1)) return;
+                _cells[x, y] = value;
             }
         }
 
