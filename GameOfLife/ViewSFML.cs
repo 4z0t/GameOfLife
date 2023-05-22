@@ -6,10 +6,23 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    internal class ViewSFML
+    using SFML.Graphics;
+    using SFML.Window;
+
+    internal class ViewSFML : IView<Color>
     {
-        public void Init(){
+        public ViewSFML()
+        {
+            _window = new(new VideoMode(200, 200), "SFML works!");
+            
         }
-        public void Render() { }
+
+        public void DrawRect(int x, int y, int w, int h, Color color)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private RenderWindow _window;
     }
 }

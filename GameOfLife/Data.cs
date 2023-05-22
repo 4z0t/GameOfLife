@@ -12,18 +12,22 @@ namespace GameOfLife
         private int gridSize;
         private int AliveCounter;
 
-        public Data() {
+        public Data()
+        {
             gridSize = 30;
             AliveCounter = 0;
             Reset(gridSize);
         }
 
-        public int[,] getGrid(){
+        public int[,] getGrid()
+        {
             return grid;
         }
 
-        private void changeCounter(int newCount){
-            if (newCount == 1 && AliveCounter+1<=gridSize*gridSize){
+        private void changeCounter(int newCount)
+        {
+            if (newCount == 1 && AliveCounter + 1 <= gridSize * gridSize)
+            {
                 AliveCounter += 1;
             }
             else if (newCount == -1 && AliveCounter - 1 >= 0)
@@ -32,12 +36,15 @@ namespace GameOfLife
             }
         }
 
-        public void OpenReset(int size){
-            if (size > 0 && size <= 100){ 
+        public void OpenReset(int size)
+        {
+            if (size > 0 && size <= 100)
+            {
                 Reset(gridSize);
             }
-            else if (size > 100) { 
-                Reset(100); 
+            else if (size > 100)
+            {
+                Reset(100);
             }
         }
 
@@ -55,11 +62,13 @@ namespace GameOfLife
             }
         }
 
-        public int GetCell(int x, int y) {
-            if (x>=0 && y>=0 && x < gridSize && y < gridSize)
+        public int GetCell(int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < gridSize && y < gridSize)
                 return grid[x, y];
-            else{
-            // тут мб надо ошибку вернуть
+            else
+            {
+                // тут мб надо ошибку вернуть
                 return 0;
             }
         }
@@ -69,7 +78,7 @@ namespace GameOfLife
         {
             if (x >= 0 && y >= 0 && x < gridSize && y < gridSize)
             {
-                if (value == 1 && grid[x, y]==0)
+                if (value == 1 && grid[x, y] == 0)
                 {
                     changeCounter(1);
                 }
@@ -80,7 +89,8 @@ namespace GameOfLife
 
         public void TransformSize(int newSize) //перенос данных в таблицу нового размера
         {
-            if (newSize > 0) {
+            if (newSize > 0)
+            {
                 int[,] oldGrid = grid;
 
                 int oldSize = gridSize;
@@ -89,34 +99,40 @@ namespace GameOfLife
 
                 int changeSize = 0;
 
-                if (newSize > oldSize) {
+                if (newSize > oldSize)
+                {
                     changeSize = oldSize;
                 }
-                else{
+                else
+                {
                     changeSize = newSize;
                 }
 
-                for (int i = 0; i < changeSize; i++){ 
+                for (int i = 0; i < changeSize; i++)
+                {
                     for (int j = 0; j < changeSize; j++)
                     {
-                        grid[i,j] = oldGrid[i,j];
+                        grid[i, j] = oldGrid[i, j];
                     }
                 }
             }
         }
 
-        public int Update(){ // здесь будут производиться вычисления для след. шагов
-            
+        public int Update()
+        { // здесь будут производиться вычисления для след. шагов
+
             // 0 - игра продолжается
             // 1 - игра прекращается
             // 2 - повторение конфигурации
             // 3 - непредвиденная ошибка
-            
+
             int count = 0;
             int[,] oldGrid = grid;
             // без краёв области
-            for (int i = 1; i < gridSize - 1; i++) {
-                for (int j = 1; j < gridSize - 1; j++) {
+            for (int i = 1; i < gridSize - 1; i++)
+            {
+                for (int j = 1; j < gridSize - 1; j++)
+                {
                     count = oldGrid[i, j - 1] + oldGrid[i - 1, j] + oldGrid[i + 1, j] + oldGrid[i, j + 1];
                     if (count == 3 && oldGrid[i, j] == 0)
                     {
@@ -126,7 +142,8 @@ namespace GameOfLife
                     else if ((count == 2 || count == 3) && oldGrid[i, j] == 1)
                     {
                     }
-                    else{
+                    else
+                    {
                         grid[i, j] = 0;
                         changeCounter(-1);
                     }
@@ -152,7 +169,8 @@ namespace GameOfLife
                 }
             }
 
-            if (AliveCounter==0){
+            if (AliveCounter == 0)
+            {
                 return 1;
             }
             return 0;
