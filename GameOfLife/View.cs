@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    internal class View
-    {
-        ViewSFML sfml;
-        public View() {
-            sfml = new ViewSFML();
-        }
-        public void Render() { }
+    //internal class View
+    //{
+    //    ViewSFML sfml;
+    //    public View() {
+    //        sfml = new ViewSFML();
+    //    }
+    //    public void Render() { }
 
-        public void Update(int [,] grid) 
-        { 
-        }
-    }
+    //    public void Update(int [,] grid) 
+    //    { 
+    //    }
+    //}
 }

@@ -9,5 +9,9 @@ namespace GameOfLife
     internal interface IView<TColor>
     {
         public void DrawRect(int x, int y, int w, int h, TColor color);
+        public void Clear();
+        public void Display();
+        public void Update();
+        public bool IsOpen { get; }
     }
 }

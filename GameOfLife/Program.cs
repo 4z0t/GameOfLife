@@ -11,47 +11,30 @@ namespace GameOfLife
         public static void Main(string[] args)
         {
 
-        Controller controller = new Controller();
+           // Controller controller = new Controller();
 
-            /*
-                RenderWindow window = new(new VideoMode(200, 200), "SFML works!");
-                CircleShape shape = new(100f);
-
-                shape.FillColor = Color.Green;
-
-                window.Resized += OnResize;
-                window.Closed += OnClose;
-
-                while (window.IsOpen)
-                {
-
-                    window.DispatchEvents();
+            ViewSFML view = new ViewSFML();
 
 
-                    window.Clear(Color.Black);
-                    window.Draw(shape);
-                    window.Display();
-
-                }
-            }
-
-
-            static public void OnResize(object sender, SizeEventArgs args)
+            while (view.IsOpen)
             {
-                FloatRect r = new FloatRect(0, 0, args.Width, args.Height);
-                RenderWindow window = sender as RenderWindow;
-                if (window == null) return;
-                window.SetView(new View(r));
-            }
+                view.Update();
+                view.Clear();
+                view.DrawRect(0,0, 10,10, Color.Green);
+                view.Display();
 
-            static public void OnClose(object sender, EventArgs args)
-            {
-
-                RenderWindow window = sender as RenderWindow;
-                if (window == null) return;
-                window.Close();
             }
-            */
         }
+       
+
+        static public void OnClose(object sender, EventArgs args)
+        {
+
+            RenderWindow window = sender as RenderWindow;
+            if (window == null) return;
+            window.Close();
+        }
+
     }
 }
+

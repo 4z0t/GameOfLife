@@ -13,5 +13,5 @@ namespace GameOfLife
         Blue,
         White,
         Black
-    }
+    }   
 }
