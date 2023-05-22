@@ -10,9 +10,9 @@ namespace GameOfLife
     public class MouseClickEventArgs : EventArgs
     {
 
-        public uint X, Y;
+        public int X, Y;
 
-        public MouseClickEventArgs(uint x, uint y)
+        public MouseClickEventArgs(int x, int y)
         {
             X = x;
             Y = y;
@@ -27,6 +27,11 @@ namespace GameOfLife
         public InputObservable()
         {
 
+        }
+
+        protected void OnMouseClick(MouseClickEventArgs args)
+        {
+            MouseClick?.Invoke(this, args);
         }
     }
 }

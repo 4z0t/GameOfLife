@@ -19,6 +19,14 @@ namespace GameOfLife
             window.SetView(new View(new FloatRect(0, 0, args.Width, args.Height)));
         }
 
+        static public void OnClose(object? sender, EventArgs args)
+        {
+            if (sender is not RenderWindow window)
+                return;
+
+            window.Close();
+        }
+
         public static SFMLColor RemapColor(Color color) => color switch
         {
             Color.Red => SFMLColor.Red,

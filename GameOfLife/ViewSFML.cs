@@ -17,8 +17,15 @@ namespace GameOfLife
 
         public ViewSFML() : base()
         {
-            _window = new(new VideoMode(200, 200), "SFML works!");
+            _window = new RenderWindow(new VideoMode(200, 200), "SFML works!" );
+            _window.SetFramerateLimit(60);
             _window.Resized += ViewUtils.OnResize;
+            _window.Closed += ViewUtils.OnClose;
+
+            _window.MouseButtonPressed += (o, e) =>
+            {
+                this.OnMouseClick(new MouseClickEventArgs(e.X, e.Y));
+            };
         }
 
 
@@ -31,9 +38,6 @@ namespace GameOfLife
             rect.FillColor = ViewUtils.RemapColor(color);
             _window.Draw(rect);
         }
-
-
-
 
         public void Clear()
         {
@@ -49,9 +53,10 @@ namespace GameOfLife
         {
             _window.DispatchEvents();
         }
+        public bool IsOpen => _window.IsOpen;
+
+
 
         private RenderWindow _window;
-
-        public bool IsOpen => _window.IsOpen;
     }
 }
