@@ -25,7 +25,33 @@ namespace GameOfLife
 
             _window.MouseButtonPressed += (o, e) =>
             {
-                this.OnMouseClick(new MouseClickEventArgs(e.X, e.Y));
+                MouseButton button = e.Button switch
+                {
+                    Mouse.Button.Left => MouseButton.Left,
+                    Mouse.Button.Right => MouseButton.Right,
+                    Mouse.Button.Middle => MouseButton.Middle,
+                    _ => MouseButton.Left,
+
+                };
+                this.OnMousePressed(new MousePressedEventArgs(e.X, e.Y, button));
+            };
+
+            _window.MouseButtonReleased += (o, e) =>
+            {
+                MouseButton button = e.Button switch
+                {
+                    Mouse.Button.Left => MouseButton.Left,
+                    Mouse.Button.Right => MouseButton.Right,
+                    Mouse.Button.Middle => MouseButton.Middle,
+                    _ => MouseButton.Left,
+
+                };
+                this.OnMouseReleased(new MouseReleasedEventArgs(e.X, e.Y, button));
+            };
+
+            _window.MouseMoved += (o, e) =>
+            {
+                this.OnMouseMoved(new MouseMovedEventArgs(e.X, e.Y));
             };
 
             _window.MouseWheelScrolled += (o, e) =>
@@ -44,6 +70,7 @@ namespace GameOfLife
             _cachedRect.Size = _cachedSize;
             _cachedRect.FillColor = ViewUtils.RemapColor(color);
             _window.Draw(_cachedRect);
+            _needDisplay = true;
         }
 
         public void Clear()
@@ -53,7 +80,11 @@ namespace GameOfLife
 
         public void Display()
         {
-            _window.Display();
+            if (_needDisplay)
+            {
+                _window.Display();
+                _needDisplay = false;
+            }
         }
 
         public void Update()
@@ -76,5 +107,6 @@ namespace GameOfLife
         private Vector2f _cachedPos = new Vector2f();
         private Vector2f _cachedSize = new Vector2f();
         private RectangleShape _cachedRect = new RectangleShape();
+        private bool _needDisplay = false;
     }
 }

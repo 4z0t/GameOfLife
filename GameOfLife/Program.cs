@@ -16,15 +16,36 @@ namespace GameOfLife
             GridData gridData = new GridData();
             GridView grid = new GridView(gridData, view);
 
-            view.MouseClick += (o, e) =>
+            view.MousePress += (o, e) =>
             {
-                view.DrawRect(e.X, e.Y, 10, 10, Color.Green);
+                if (e.Button == MouseButton.Middle)
+                {
+                    grid.SetAction(new GridView.GridViewChangePositionState(e.X, e.Y));
+                    return;
+                }
+                grid.SetAction(new GridView.GridViewChangeCellState(e.Button switch
+                {
+                    MouseButton.Left => CellState.Alive,
+                    MouseButton.Right => CellState.Empty,
+                    _ => CellState.Empty,
+                }));
             };
 
+            view.MouseRelease += (o, e) =>
+            {
+                grid.SetAction(new GridView.GridViewEditState());
+            };
+
+            view.MouseMove += (o, e) =>
+            {
+                grid.OnAction(e);
+                view.Display();
+            };
 
             view.MouseWheel += (o, e) =>
             {
                 grid.Scale += e.Delta;
+                view.Clear();
                 grid.Render();
                 view.Display();
             };

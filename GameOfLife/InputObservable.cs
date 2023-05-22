@@ -7,19 +7,50 @@ using System.Threading.Tasks;
 namespace GameOfLife
 {
 
-    public class MouseClickEventArgs : EventArgs
+
+    public enum MouseButton
+    {
+        Left,
+        Middle,
+        Right,
+    }
+
+
+    public class MouseMovedEventArgs : EventArgs
     {
 
         public int X, Y;
 
-        public MouseClickEventArgs(int x, int y)
+        public MouseMovedEventArgs(int x, int y)
         {
             X = x;
             Y = y;
         }
     }
 
-    public class MouseWheelEventArgs : MouseClickEventArgs
+    public class MousePressedEventArgs : MouseMovedEventArgs
+    {
+        public MouseButton Button;
+        public MousePressedEventArgs(int x, int y, MouseButton button) : base(x, y)
+        {
+            Button = button;
+        }
+    }
+
+
+    public class MouseReleasedEventArgs : MousePressedEventArgs
+    {
+        public MouseReleasedEventArgs(int x, int y, MouseButton button) : base(x, y, button)
+        {
+
+        }
+    }
+
+
+
+
+
+    public class MouseWheelEventArgs : MouseMovedEventArgs
     {
 
         public double Delta;
@@ -33,7 +64,9 @@ namespace GameOfLife
 
     internal class InputObservable
     {
-        public event EventHandler<MouseClickEventArgs> MouseClick;
+        public event EventHandler<MousePressedEventArgs> MousePress;
+        public event EventHandler<MouseReleasedEventArgs> MouseRelease;
+        public event EventHandler<MouseMovedEventArgs> MouseMove;
         public event EventHandler<MouseWheelEventArgs> MouseWheel;
 
         public InputObservable()
@@ -41,14 +74,24 @@ namespace GameOfLife
 
         }
 
-        protected void OnMouseClick(MouseClickEventArgs args)
+        protected void OnMousePressed(MousePressedEventArgs args)
         {
-            MouseClick?.Invoke(this, args);
+            MousePress?.Invoke(this, args);
         }
 
         protected void OnMouseWheel(MouseWheelEventArgs args)
         {
             MouseWheel?.Invoke(this, args);
+        }
+
+        protected void OnMouseMoved(MouseMovedEventArgs args)
+        {
+            MouseMove?.Invoke(this, args);
+        }
+
+        protected void OnMouseReleased(MouseReleasedEventArgs args)
+        {
+            MouseRelease?.Invoke(this, args);
         }
     }
 }

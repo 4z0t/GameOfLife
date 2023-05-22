@@ -11,7 +11,10 @@ namespace GameOfLife
     {
         public CellState this[int x, int y]
         {
-            get => CellState.Alive;
+            get
+            {
+                return ((x + y) % 2 == 1) ? CellState.Alive : CellState.Empty;
+            }
             set
             {
 

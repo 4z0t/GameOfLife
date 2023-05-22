@@ -8,7 +8,64 @@ namespace GameOfLife
 {
     internal class GridView
     {
+        public class GridViewEditState
+        {
 
+            public GridViewEditState()
+            {
+
+            }
+
+            public virtual bool Action(GridView view, MouseMovedEventArgs args)
+            {
+                Console.WriteLine("no");
+                return false;
+            }
+        }
+
+        public class GridViewChangePositionState : GridViewEditState
+        {
+
+            public GridViewChangePositionState(int x, int y)
+            {
+                _x = x;
+                _y = y;
+            }
+
+            public override bool Action(GridView view, MouseMovedEventArgs args)
+            {
+                (double x1, double y1) = view.ScaleVector(args.X - _x, args.Y - _y);
+                (double x2, double y2) = view.Position;
+               view.Position = (x1 + x2, y1 + y2);
+
+
+                //view.Position = view.TranslatePosition(_x - args.X, _y - args.Y);
+                _x = args.X;
+                _y = args.Y;
+                //view.Position = view.ScaleVector(args.X - _x, args.Y - _y);
+                Console.WriteLine(view.Position.ToString());
+                return true;
+            }
+
+            private int _x;
+            private int _y;
+        }
+
+        public class GridViewChangeCellState : GridViewEditState
+        {
+            public GridViewChangeCellState(CellState cell)
+            {
+                _cell = cell;
+            }
+
+            public override bool Action(GridView view, MouseMovedEventArgs args)
+            {
+                Console.WriteLine(_cell);
+                return true;
+            }
+
+            private CellState _cell;
+        }
 
 
         public GridView(IData<CellState> data, IView<Color> view)
@@ -38,15 +95,52 @@ namespace GameOfLife
 
             for (int i = 0; i < gridWidth; i++)
             {
-                double x = (left + i) * expScale + viewWidth / 2;
+                double x = i * expScale;
                 for (int j = 0; j < gridHeight; j++)
                 {
-                    double y = (top + j) * expScale + viewHeight / 2;
-                    _view.DrawRect((int)x, (int)y, (int)expScale, (int)expScale, ((i + j) % 2 == 1) ? Color.White : Color.Blue);
+                    double y =  j * expScale ;
+                    CellState cell = _data[(int)left + i, (int)top + j];
+                    _view.DrawRect((int)x, (int)y, (int)expScale, (int)expScale, (cell == CellState.Alive) ? Color.White : Color.Blue);
                 }
             }
         }
 
+
+        public void SetAction(GridViewEditState state)
+        {
+            _state = state;
+        }
+
+        public void OnAction(MouseMovedEventArgs args)
+        {
+            if (_state.Action(this, args))
+            {
+                _view.Clear();
+                this.Render();
+            }
+        }
+
+        public (double, double) ScaleVector(int x, int y)
+        {
+            double expScale = Math.Pow(2, _scale);
+            return (x / expScale, y / expScale);
+        }
+
+        public (double, double) TranslatePosition(int x, int y)
+        {
+
+            (int viewWidth, int viewHeight) = _view.Size;
+
+            double expScale = Math.Pow(2, _scale);
+
+            int centerX = viewWidth / 2;
+            int centerY = viewHeight / 2;
+
+            int dx = centerX - x;
+            int dy = centerY - y;
+
+            return (dx / expScale, dy / expScale);
+        }
 
         public double Scale
         {
@@ -67,6 +161,8 @@ namespace GameOfLife
 
         private IData<CellState> _data;
         private IView<Color> _view;
+
+        private GridViewEditState _state = new GridViewEditState();
 
     }
 }
