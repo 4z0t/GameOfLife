@@ -36,7 +36,7 @@ namespace GameOfLife
         }
         public Data()
         {
-            gridSize = 30;
+            gridSize = 100;
             AliveCounter = 0;
             Reset(gridSize);
         }
@@ -58,15 +58,11 @@ namespace GameOfLife
             }
         }
 
-        public void OpenReset(int size)
+        public void OpenReset(int size) // установка всех клеток пустыми
         {
-            if (size > 0 && size <= 100)
+            if (size > 0)
             {
                 Reset(gridSize);
-            }
-            else if (size > 100)
-            {
-                Reset(100);
             }
         }
 
@@ -155,7 +151,9 @@ namespace GameOfLife
             {
                 for (int j = 1; j < gridSize - 1; j++)
                 {
-                    count = oldGrid[i, j - 1] + oldGrid[i - 1, j] + oldGrid[i + 1, j] + oldGrid[i, j + 1];
+                    count = oldGrid[i - 1, j + 1] + oldGrid[i, j + 1] + oldGrid[i + 1, j + 1]
+                    + oldGrid[i - 1, j] + oldGrid[i + 1, j] +
+                    +oldGrid[i - 1, j - 1] + oldGrid[i, j - 1] + oldGrid[i + 1, j - 1];
                     if (count == 3 && oldGrid[i, j] == 0)
                     {
                         grid[i, j] = 1;
@@ -169,25 +167,6 @@ namespace GameOfLife
                         grid[i, j] = 0;
                         ChangeCounter(-1);
                     }
-                }
-            }
-
-            //1 из крайних сторон
-            for (int j = 1; j < gridSize - 1; j++)
-            {
-                count = oldGrid[0, j - 1] + oldGrid[1, j] + oldGrid[0, j + 1];
-                if (count == 3 && oldGrid[0, j] == 0)
-                {
-                    grid[0, j] = 1;
-                    ChangeCounter(1);
-                }
-                else if ((count == 2 || count == 3) && oldGrid[0, j] == 1)
-                {
-                }
-                else
-                {
-                    grid[0, j] = 0;
-                    ChangeCounter(-1);
                 }
             }
 
