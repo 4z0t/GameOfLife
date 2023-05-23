@@ -8,6 +8,9 @@ namespace GameOfLife
 {
     internal class GridView
     {
+
+
+
         public class GridViewEditState
         {
 
@@ -61,6 +64,8 @@ namespace GameOfLife
 
             private CellState _cell;
         }
+
+        public static GridViewEditState DefaultState = new GridViewEditState();
 
 
         public GridView(IData<CellState> data, IView<Color> view)
@@ -161,6 +166,7 @@ namespace GameOfLife
             set { (_x, _y) = value; }
         }
 
+
         private double _scale = 0;
         private double _x = 0;
         private double _y = 0;
@@ -169,7 +175,7 @@ namespace GameOfLife
         private IData<CellState> _data;
         private IView<Color> _view;
 
-        private GridViewEditState _state = new GridViewEditState();
+        private GridViewEditState _state = DefaultState;
 
     }
 }

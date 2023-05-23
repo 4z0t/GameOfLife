@@ -19,7 +19,7 @@ namespace GameOfLife
 
         public ViewSFML() : base()
         {
-            _window = new RenderWindow(new VideoMode(200, 200), "SFML works!");
+            _window = new RenderWindow(new VideoMode(1080, 720), "SFML works!");
             _window.SetFramerateLimit(60);
             _window.Resized += ViewUtils.OnResize;
             _window.Resized += (o, e) =>

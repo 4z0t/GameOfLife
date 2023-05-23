@@ -50,7 +50,7 @@ namespace GameOfLife
 
             view.MouseRelease += (o, e) =>
             {
-                grid.SetAction(new GridView.GridViewEditState(), e);
+                grid.SetAction(GridView.DefaultState, e);
             };
 
             view.MouseMove += (o, e) =>
