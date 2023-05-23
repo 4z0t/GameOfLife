@@ -145,7 +145,7 @@ namespace GameOfLife
             // 3 - непредвиденная ошибка
 
             int count = 0;
-            int[,] oldGrid = grid;
+            int[,] oldGrid = (int[,])grid.Clone();
             // без краёв области
             for (int i = 1; i < gridSize - 1; i++)
             {
