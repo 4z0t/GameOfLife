@@ -39,8 +39,8 @@ namespace GameOfLife
             data.TransformSize(newSize);
         }
 
-        public void Update(){
-            data.Update();
+        public int Update(){ // 1 тик
+            return data.Update();
         }
     }
 }
