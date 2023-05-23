@@ -11,14 +11,17 @@ namespace GameOfLife
         public static void Main(string[] args)
         {
 
-            // Controller controller = new Controller();
+
+
+            Data gridData = new Data();
             ViewSFML view = new ViewSFML();
-            GridData gridData = new GridData();
             GridView grid = new GridView(gridData, view);
             grid.Scale = 4;
 
             Button button = new Button();
+            Button updateButton = new Button();
             ButtonView buttonView = new ButtonView(30, 30, 200, 100, Color.Green, button);
+            ButtonView updateButtonView = new ButtonView(500, 30, 200, 100, Color.Red, updateButton);
 
 
             button.Clicked += (o, e) =>
@@ -26,8 +29,19 @@ namespace GameOfLife
                 grid.Position = (0, 0);
             };
 
+            updateButton.Clicked += (o, e) =>
+            {
+                Console.WriteLine("Update");
+                gridData.Update();
+                view.RequestRerender(updateButton);
+            };
+
             view.MousePress += (o, e) =>
             {
+                if (updateButtonView.OnClicked(o, e))
+                {
+                    return;
+                }
                 if (buttonView.OnClicked(o, e))
                 {
                     return;
@@ -66,6 +80,7 @@ namespace GameOfLife
 
             view.ViewChanged += grid.Render;
             view.ViewChanged += buttonView.Render;
+            view.ViewChanged += updateButtonView.Render;
 
 
 

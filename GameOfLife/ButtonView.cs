@@ -36,7 +36,7 @@ namespace GameOfLife
         {
             if (sender is not IView<Color> view)
                 return;
-            view.DrawRect(_rect.Top, _rect.Left, _rect.Width, _rect.Height, Color);
+            view.DrawRect(_rect.Left, _rect.Top, _rect.Width, _rect.Height, Color);
         }
 
         public Color Color { get; set; }

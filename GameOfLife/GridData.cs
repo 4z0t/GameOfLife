@@ -29,5 +29,9 @@ namespace GameOfLife
             }
         }
 
+        public int Update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

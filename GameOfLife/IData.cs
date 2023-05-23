@@ -8,6 +8,7 @@ namespace GameOfLife
 {
     internal interface IData<T>
     {
+        public int Update();
         public T this[int x, int y] { get; set; }
 
     }

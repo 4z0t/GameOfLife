@@ -6,12 +6,34 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    internal class Data
+    internal class Data : IData<CellState>
     {
         private int[,] grid;
         private int gridSize;
         private int AliveCounter;
 
+        public CellState this[int x, int y]
+        {
+            get
+            {
+                var v = GetCell(x, y);
+                return v switch
+                {
+                    0 => CellState.Empty,
+                    1 => CellState.Alive,
+                    _ => CellState.Empty
+                };
+
+            }
+            set
+            {
+                SetCell(x, y, value switch
+                {
+                    CellState.Alive => 1,
+                    _ => 0
+                });
+            }
+        }
         public Data()
         {
             gridSize = 30;
@@ -24,7 +46,7 @@ namespace GameOfLife
             return grid;
         }
 
-        private void changeCounter(int newCount)
+        private void ChangeCounter(int newCount)
         {
             if (newCount == 1 && AliveCounter + 1 <= gridSize * gridSize)
             {
@@ -50,7 +72,7 @@ namespace GameOfLife
 
         private void Reset(int size) // установка всех клеток пустыми
         {
-            int[,] grid = new int[size, size];
+            grid = new int[size, size];
             gridSize = size;
             AliveCounter = 0;
             for (int i = 0; i < size; i++)
@@ -80,7 +102,7 @@ namespace GameOfLife
             {
                 if (value == 1 && grid[x, y] == 0)
                 {
-                    changeCounter(1);
+                    ChangeCounter(1);
                 }
                 grid[x, y] = value;
             }
@@ -137,7 +159,7 @@ namespace GameOfLife
                     if (count == 3 && oldGrid[i, j] == 0)
                     {
                         grid[i, j] = 1;
-                        changeCounter(1);
+                        ChangeCounter(1);
                     }
                     else if ((count == 2 || count == 3) && oldGrid[i, j] == 1)
                     {
@@ -145,7 +167,7 @@ namespace GameOfLife
                     else
                     {
                         grid[i, j] = 0;
-                        changeCounter(-1);
+                        ChangeCounter(-1);
                     }
                 }
             }
@@ -157,7 +179,7 @@ namespace GameOfLife
                 if (count == 3 && oldGrid[0, j] == 0)
                 {
                     grid[0, j] = 1;
-                    changeCounter(1);
+                    ChangeCounter(1);
                 }
                 else if ((count == 2 || count == 3) && oldGrid[0, j] == 1)
                 {
@@ -165,7 +187,7 @@ namespace GameOfLife
                 else
                 {
                     grid[0, j] = 0;
-                    changeCounter(-1);
+                    ChangeCounter(-1);
                 }
             }
 
