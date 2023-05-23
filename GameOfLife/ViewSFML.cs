@@ -15,11 +15,19 @@ namespace GameOfLife
     internal class ViewSFML : InputObservable, IView<Color>
     {
 
+        public event EventHandler ViewChanged;
+
         public ViewSFML() : base()
         {
             _window = new RenderWindow(new VideoMode(200, 200), "SFML works!");
             _window.SetFramerateLimit(60);
             _window.Resized += ViewUtils.OnResize;
+            _window.Resized += (o, e) =>
+            {
+                _needRerender = true;
+                this.Render();
+            };
+
             _window.Closed += ViewUtils.OnClose;
 
 
@@ -68,9 +76,10 @@ namespace GameOfLife
             _cachedSize.X = w; _cachedSize.Y = h;
             _cachedRect.Position = _cachedPos;
             _cachedRect.Size = _cachedSize;
+            _cachedRect.OutlineThickness = 1f;
+            _cachedRect.OutlineColor = SFML.Graphics.Color.Yellow;
             _cachedRect.FillColor = ViewUtils.RemapColor(color);
             _window.Draw(_cachedRect);
-            _needDisplay = true;
         }
 
         public void Clear()
@@ -80,17 +89,31 @@ namespace GameOfLife
 
         public void Display()
         {
-            if (_needDisplay)
+            _window.Display();
+        }
+
+        public void Render()
+        {
+            if (_needRerender)
             {
-                _window.Display();
-                _needDisplay = false;
+                Clear();
+                ViewChanged?.Invoke(this, EventArgs.Empty);
+                Display();
+                _needRerender = false;
             }
         }
 
         public void Update()
         {
+            Render();
             _window.DispatchEvents();
         }
+
+        public void RequestRerender(object? sender)
+        {
+            _needRerender = true;
+        }
+
         public bool IsOpen => _window.IsOpen;
 
         public (int, int) Size
@@ -107,6 +130,6 @@ namespace GameOfLife
         private Vector2f _cachedPos = new Vector2f();
         private Vector2f _cachedSize = new Vector2f();
         private RectangleShape _cachedRect = new RectangleShape();
-        private bool _needDisplay = false;
+        private bool _needRerender = true;
     }
 }

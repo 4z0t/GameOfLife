@@ -69,6 +69,10 @@ namespace GameOfLife
             _view = view;
         }
 
+        public void Render(object? sender, EventArgs args)
+        {
+            Render();
+        }
 
         public void Render()
         {
@@ -119,8 +123,7 @@ namespace GameOfLife
         {
             if (_state.Action(this, args))
             {
-                _view.Clear();
-                this.Render();
+                _view.RequestRerender(this);
             }
         }
 

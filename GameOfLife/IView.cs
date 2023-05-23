@@ -14,6 +14,7 @@ namespace GameOfLife
         public void Display();
         public void Update();
 
+        public void RequestRerender(object? sender);
         public bool IsOpen { get; }
     }
 }
