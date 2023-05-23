@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    internal class Controller
-    {
-        Model model;
-        View view;
-        public Controller() {
-            model = new Model();
-            view = new View();
+    //internal class Controller
+    //{
+    //    Model model;
+    //    View view;
+    //    public Controller() {
+    //        model = new Model();
+    //        view = new View();
 
-        }
+    //    }
 
-        public void Render() { 
+    //    public void Render() { 
             
-            view.Render();
-        } // отрисовка окна
+    //        view.Render();
+    //    } // отрисовка окна
 
-        public void Update() { 
-            model.Update();
-            view.Update(model.getGrid()); // пока хз как будем передавать данные
-        } // 1 шаг алгоритма
+    //    public void Update() { 
+    //        model.Update();
+    //        view.Update(model.getGrid()); // пока хз как будем передавать данные
+    //    } // 1 шаг алгоритма
 
-        public void GetData(int x, int y) // получение значения на клетке
-        {
+    //    public void GetData(int x, int y) // получение значения на клетке
+    //    {
            
-        }
+    //    }
 
-        public void GridChange(int gridSize)  // установка параметра слайдером
-        { // установка параметра слайдером
+    //    public void GridChange(int gridSize)  // установка параметра слайдером
+    //    { // установка параметра слайдером
 
-        }
+    //    }
 
-        public void TimeChange(int CycleTime) // установка параметра слайдером
-        { 
+    //    public void TimeChange(int CycleTime) // установка параметра слайдером
+    //    { 
 
-        }
+    //    }
 
-        public void Reset() {  } // Обновление всех данных(для кнопки Стереть Всё)
+    //    public void Reset() {  } // Обновление всех данных(для кнопки Стереть Всё)
 
-    }
+    //}
 }

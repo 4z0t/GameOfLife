@@ -6,35 +6,37 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    public interface IStrategy
+
+
+    public class ButtonClickedEventArgs : EventArgs
     {
-        void Action();
+
+        public ButtonView View;
+        public ButtonClickedEventArgs(ButtonView view)
+        {
+            View = view;
+        }
     }
 
-    public class Button1 : IStrategy
-    {
-        public void Action()
-        { }
-    }
 
-    public class Button2 : IStrategy
-    {
-        public void Action()
-        { }
-    }
 
     public class Button
     {
-        public IStrategy ContextStrategy { get; set; }
+        public event EventHandler<ButtonClickedEventArgs> Clicked;
 
-        public Button(IStrategy _strategy)
+        public virtual void OnCliked(ButtonView view)
         {
-            ContextStrategy = _strategy;
+            Clicked?.Invoke(this, new ButtonClickedEventArgs(view));
         }
 
-        public void ExecuteAlgorithm()
+    }
+
+    public class MyButton : Button
+    {
+        public override void OnCliked(ButtonView view)
         {
-            ContextStrategy.Action();
+            Console.WriteLine("AAAAAA");
+            view.Color = Color.Red;
         }
     }
 }

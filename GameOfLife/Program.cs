@@ -11,47 +11,92 @@ namespace GameOfLife
         public static void Main(string[] args)
         {
 
-        Controller controller = new Controller();
 
-            /*
-                RenderWindow window = new(new VideoMode(200, 200), "SFML works!");
-                CircleShape shape = new(100f);
 
-                shape.FillColor = Color.Green;
+            Data gridData = new Data();
+            ViewSFML view = new ViewSFML();
+            GridView grid = new GridView(gridData, view);
+            grid.Scale = 4;
 
-                window.Resized += OnResize;
-                window.Closed += OnClose;
+            Button button = new Button();
+            Button updateButton = new Button();
+            ButtonView buttonView = new ButtonView(30, 30, 200, 100, Color.Green, button);
+            ButtonView updateButtonView = new ButtonView(500, 30, 200, 100, Color.Red, updateButton);
 
-                while (window.IsOpen)
+
+            button.Clicked += (o, e) =>
+            {
+                grid.Position = (0, 0);
+            };
+
+            updateButton.Clicked += (o, e) =>
+            {
+                Console.WriteLine("Update");
+                gridData.Update();
+                view.RequestRerender(updateButton);
+            };
+
+            view.MousePress += (o, e) =>
+            {
+                if (updateButtonView.OnClicked(o, e))
                 {
-
-                    window.DispatchEvents();
-
-
-                    window.Clear(Color.Black);
-                    window.Draw(shape);
-                    window.Display();
-
+                    return;
                 }
-            }
+                if (buttonView.OnClicked(o, e))
+                {
+                    return;
+                }
+                if (e.Button == MouseButton.Middle)
+                {
+                    grid.SetAction(new GridView.GridViewChangePositionState(e.X, e.Y), e);
+                }
+                else
+                {
+                    grid.SetAction(new GridView.GridViewChangeCellState(e.Button switch
+                    {
+                        MouseButton.Left => CellState.Alive,
+                        MouseButton.Right => CellState.Empty,
+                        _ => CellState.Empty,
+                    }), e);
+                }
+                view.RequestRerender(grid);
+            };
 
-
-            static public void OnResize(object sender, SizeEventArgs args)
+            view.MouseRelease += (o, e) =>
             {
-                FloatRect r = new FloatRect(0, 0, args.Width, args.Height);
-                RenderWindow window = sender as RenderWindow;
-                if (window == null) return;
-                window.SetView(new View(r));
-            }
+                grid.SetAction(GridView.DefaultState, e);
+            };
 
-            static public void OnClose(object sender, EventArgs args)
+            view.MouseMove += (o, e) =>
             {
+                grid.OnAction(e);
+            };
 
-                RenderWindow window = sender as RenderWindow;
-                if (window == null) return;
-                window.Close();
+            view.MouseWheel += (o, e) =>
+            {
+                grid.Scale += e.Delta;
+                view.RequestRerender(grid);
+            };
+
+            view.ViewChanged += grid.Render;
+            view.ViewChanged += buttonView.Render;
+            view.ViewChanged += updateButtonView.Render;
+
+
+
+
+            while (view.IsOpen)
+            {
+                view.Update();
+
+                // view.Clear();
+                //view.DrawRect(0,0, 10,10, Color.Green);
+                //view.Display();
+
             }
-            */
         }
+
+
     }
 }
+
