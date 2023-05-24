@@ -77,7 +77,7 @@ namespace GameOfLife
             _cachedRect.Position = _cachedPos;
             _cachedRect.Size = _cachedSize;
             _cachedRect.OutlineThickness = 1f;
-            _cachedRect.OutlineColor = SFML.Graphics.Color.Yellow;
+            _cachedRect.OutlineColor = SFML.Graphics.Color.Blue;
             _cachedRect.FillColor = ViewUtils.RemapColor(color);
             _window.Draw(_cachedRect);
         }

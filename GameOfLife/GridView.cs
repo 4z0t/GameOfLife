@@ -107,7 +107,7 @@ namespace GameOfLife
                 {
                     double y = (j - dy) * expScale;
                     CellState cell = _data[(int)left + i, (int)top + j];
-                    _view.DrawRect((int)x, (int)y, (int)expScale, (int)expScale, (cell == CellState.Alive) ? Color.White : Color.Blue);
+                    _view.DrawRect((int)x, (int)y, (int)expScale, (int)expScale, (cell == CellState.Alive) ? Color.White : Color.Black);
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace GameOfLife
         {
 
 
-
+            SFML.System.Clock clock = new SFML.System.Clock();
             Data gridData = new Data();
             ViewSFML view = new ViewSFML();
             GridView grid = new GridView(gridData, view);
@@ -27,13 +27,12 @@ namespace GameOfLife
             ButtonView resetButtonView = new ButtonView(970, 30, 200, 100, Color.White, resetButton);
             ButtonView repeatButtonView = new ButtonView(1440, 30, 200, 100, Color.Blue, repeatButton);
             bool updateFlag = false;
-            int updateCounter = 0;
 
             button.Clicked += (o, e) =>
             {
-                
+
                 grid.Position = (0, 0);
-                
+
             };
 
 
@@ -118,11 +117,14 @@ namespace GameOfLife
             while (view.IsOpen)
             {
                 view.Update();
-                updateCounter += 1;
-                if (updateFlag && updateCounter % 60 == 0)
+                if (updateFlag)
                 {
-                    gridData.Update();
-
+                    if (clock.ElapsedTime >= SFML.System.Time.FromMilliseconds(300))
+                    {
+                        clock.Restart();
+                        gridData.Update();
+                        view.RequestRerender(null);
+                    }
                 }
                 // view.Clear();
                 //view.DrawRect(0,0, 10,10, Color.Green);
