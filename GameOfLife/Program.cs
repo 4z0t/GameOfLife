@@ -31,9 +31,7 @@ namespace GameOfLife
 
             updateButton.Clicked += (o, e) =>
             {
-                Console.WriteLine("Update");
                 gridData.Update();
-                view.RequestRerender(updateButton);
             };
 
             view.MousePress += (o, e) =>

@@ -41,10 +41,6 @@ namespace GameOfLife
             Reset(gridSize);
         }
 
-        public int[,] getGrid()
-        {
-            return grid;
-        }
 
         private void ChangeCounter(int newCount)
         {

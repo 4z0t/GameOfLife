@@ -30,13 +30,4 @@ namespace GameOfLife
         }
 
     }
-
-    public class MyButton : Button
-    {
-        public override void OnCliked(ButtonView view)
-        {
-            Console.WriteLine("AAAAAA");
-            view.Color = Color.Red;
-        }
-    }
 }
