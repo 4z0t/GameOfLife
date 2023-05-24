@@ -37,6 +37,7 @@ namespace GameOfLife
         {
             Console.WriteLine("AAAAAA");
             view.Color = Color.Red;
+            
         }
     }
 }

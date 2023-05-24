@@ -20,20 +20,42 @@ namespace GameOfLife
 
             Button button = new Button();
             Button updateButton = new Button();
+            Button resetButton = new Button();
+            Button repeatButton = new Button();
             ButtonView buttonView = new ButtonView(30, 30, 200, 100, Color.Green, button);
             ButtonView updateButtonView = new ButtonView(500, 30, 200, 100, Color.Red, updateButton);
-
+            ButtonView resetButtonView = new ButtonView(970, 30, 200, 100, Color.White, resetButton);
+            ButtonView repeatButtonView = new ButtonView(1440, 30, 200, 100, Color.Blue, repeatButton);
+            bool updateFlag = false;
+            int updateCounter = 0;
 
             button.Clicked += (o, e) =>
             {
+                
                 grid.Position = (0, 0);
+                
             };
+
 
             updateButton.Clicked += (o, e) =>
             {
                 Console.WriteLine("Update");
                 gridData.Update();
                 view.RequestRerender(updateButton);
+            };
+
+            resetButton.Clicked += (o, e) =>
+            {
+                Console.WriteLine("Reset");
+                gridData.OpenReset(100);
+
+            };
+
+            repeatButton.Clicked += (o, e) =>
+
+            {
+                updateFlag = !updateFlag;
+
             };
 
             view.MousePress += (o, e) =>
@@ -43,6 +65,14 @@ namespace GameOfLife
                     return;
                 }
                 if (buttonView.OnClicked(o, e))
+                {
+                    return;
+                }
+                if (resetButtonView.OnClicked(o, e))
+                {
+                    return;
+                }
+                if (repeatButtonView.OnClicked(o, e))
                 {
                     return;
                 }
@@ -81,6 +111,8 @@ namespace GameOfLife
             view.ViewChanged += grid.Render;
             view.ViewChanged += buttonView.Render;
             view.ViewChanged += updateButtonView.Render;
+            view.ViewChanged += resetButtonView.Render;
+            view.ViewChanged += repeatButtonView.Render;
 
 
 
@@ -88,7 +120,12 @@ namespace GameOfLife
             while (view.IsOpen)
             {
                 view.Update();
+                updateCounter += 1;
+                if (updateFlag && updateCounter % 60 == 0)
+                {
+                    gridData.Update();
 
+                }
                 // view.Clear();
                 //view.DrawRect(0,0, 10,10, Color.Green);
                 //view.Display();
