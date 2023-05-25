@@ -13,6 +13,11 @@ namespace GameOfLife
             _grid = new T[size, size];
         }
 
+        public LoopedData(LoopedData<T> other)
+        {
+            _grid = (T[,])other._grid.Clone();
+        }
+
         public T this[int x, int y]
         {
             get
@@ -41,6 +46,12 @@ namespace GameOfLife
             if (y + 1 != _grid.GetLength(1)) return (true, 0, y + 1);
 
             return (false, 0, 0);
+        }
+
+        public IModelGridData<T> Clone()
+        {
+            LoopedData<T> clone = new(this);
+            return clone;
         }
 
         private T[,] _grid;

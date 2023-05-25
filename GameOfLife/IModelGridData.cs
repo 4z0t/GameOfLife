@@ -8,6 +8,7 @@ namespace GameOfLife
 {
     internal interface IModelGridData<T> : IData<T>
     {
+        public IModelGridData<T> Clone();
         public (int, int) GetStartIndex();
         public (bool, int, int) Next(int x, int y);
     }
