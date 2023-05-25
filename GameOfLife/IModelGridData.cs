@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    internal interface IData<T>
+    internal interface IModelGridData<T> : IData<T>
     {
-       // public int Update();
-        public T this[int x, int y] { get; set; }
-
+        public (int, int) GetStartIndex();
+        public (bool, int, int) Next(int x, int y);
     }
 }
