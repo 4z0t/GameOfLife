@@ -14,9 +14,9 @@ namespace GameOfLife
 
             SFML.System.Clock clock = new SFML.System.Clock();
             FixedData<int> fixedData = new(100);
-            LoopedData<int> gridData = new(20);
+            LoopedData<int> gridData = new(25);
 
-            Model model = new Model(fixedData);
+            Model model = new Model(gridData);
             ViewSFML view = new ViewSFML();
             GridView grid = new GridView(model, view);
             grid.Scale = 4;
