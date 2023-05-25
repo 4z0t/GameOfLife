@@ -22,16 +22,26 @@ namespace GameOfLife
         {
             get
             {
-                x = x % _grid.GetLength(0);
-                y = y % _grid.GetLength(1);
+                (x, y) = ClampIndex(x, y);
                 return _grid[x, y];
             }
             set
             {
-                x = x % _grid.GetLength(0);
-                y = y % _grid.GetLength(1);
+                (x, y) = ClampIndex(x, y);
                 _grid[x, y] = value;
             }
+        }
+
+        public (int, int) ClampIndex(int x, int y)
+        {
+            if (x < 0)
+                x = (1 - x / _grid.GetLength(0)) * _grid.GetLength(0) + x;
+            if (y < 0)
+                y = (1 - y / _grid.GetLength(1)) * _grid.GetLength(1) + y;
+
+            x = x % _grid.GetLength(0);
+            y = y % _grid.GetLength(1);
+            return (x, y);
         }
 
         public (int, int) GetStartIndex()

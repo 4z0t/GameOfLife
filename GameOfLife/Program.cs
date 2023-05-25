@@ -13,9 +13,11 @@ namespace GameOfLife
 
 
             SFML.System.Clock clock = new SFML.System.Clock();
-            Data gridData = new Data();
+            LoopedData<int> gridData = new(100);
+
+            Model model = new Model(gridData);
             ViewSFML view = new ViewSFML();
-            GridView grid = new GridView(gridData, view);
+            GridView grid = new GridView(model, view);
             grid.Scale = 4;
 
             Button button = new Button();
@@ -38,13 +40,13 @@ namespace GameOfLife
 
             updateButton.Clicked += (o, e) =>
             {
-                gridData.Update();
+                model.Update();
             };
 
             resetButton.Clicked += (o, e) =>
             {
                 Console.WriteLine("Reset");
-                gridData.OpenReset(100);
+                
 
             };
 
@@ -122,7 +124,7 @@ namespace GameOfLife
                     if (clock.ElapsedTime >= SFML.System.Time.FromMilliseconds(300))
                     {
                         clock.Restart();
-                        gridData.Update();
+                        model.Update();
                         view.RequestRerender(null);
                     }
                 }
