@@ -19,7 +19,6 @@ namespace GameOfLife
     }
 
 
-
     public class Button
     {
         public event EventHandler<ButtonClickedEventArgs> Clicked;
@@ -29,15 +28,5 @@ namespace GameOfLife
             Clicked?.Invoke(this, new ButtonClickedEventArgs(view));
         }
 
-    }
-
-    public class MyButton : Button
-    {
-        public override void OnCliked(ButtonView view)
-        {
-            Console.WriteLine("AAAAAA");
-            view.Color = Color.Red;
-            
-        }
     }
 }

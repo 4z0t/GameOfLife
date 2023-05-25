@@ -129,10 +129,6 @@ namespace GameOfLife
                         view.RequestRerender(null);
                     }
                 }
-                // view.Clear();
-                //view.DrawRect(0,0, 10,10, Color.Green);
-                //view.Display();
-
             }
         }
 
