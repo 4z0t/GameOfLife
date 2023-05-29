@@ -28,10 +28,5 @@ namespace GameOfLife
                 _cells[x, y] = value;
             }
         }
-
-        public int Update()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
